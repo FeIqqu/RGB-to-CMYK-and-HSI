@@ -50,31 +50,27 @@ namespace RGB
                 }
 
                 // CMYK
-                double rPrime = red / 255.0;
-                double gPrime = green / 255.0;
-                double bPrime = blue / 255.0;
+                double W = Math.Max(Math.Max(red, green), blue);
 
-                double K = 1 - Math.Max(Math.Max(rPrime, gPrime), bPrime);
+                double C = 0, M = 0, Y = 0, K = 1;
 
-                double C = (K < 1) ? (1 - rPrime - K) / (1 - K) : 0;
-                double M = (K < 1) ? (1 - gPrime - K) / (1 - K) : 0;
-                double Y = (K < 1) ? (1 - bPrime - K) / (1 - K) : 0;
+                if (red + green + blue != 0)
+                {
+                    C = 100 * (1 - red / W);
+                    M = 100 * (1 - green / W);
+                    Y = 100 * (1 - blue / W);
+                    K = 100 * (1 - W / 255);
+                }
 
-                textBox6.Text = Math.Round(C * 100).ToString();
-                textBox5.Text = Math.Round(M * 100).ToString();
-                textBox4.Text = Math.Round(Y * 100).ToString();
-                textBox7.Text = Math.Round(K * 100).ToString();
+                textBox6.Text = Math.Round(C).ToString();
+                textBox5.Text = Math.Round(M).ToString();
+                textBox4.Text = Math.Round(Y).ToString();
+                textBox7.Text = Math.Round(K).ToString();
 
                 // HSI
-                double H, S, I;
+                double H = 0, S = 0, I = 0;
 
-                if (red + green + blue == 0)
-                {
-                    H = 0;
-                    S = 0;
-                    I = 0;
-                }
-                else
+                if (red + green + blue != 0)
                 {
                     int _M = Math.Min(Math.Min(red, green), blue);
 
